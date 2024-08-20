@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <Property name="logPath">./log</Property>
+    </Properties>
+    <Appenders>
+        <RollingFile name="fileA" fileName="${logPath}/a/${date:yyyy-MM-dd}/app.log"
+                     filePattern="${logPath}/a/${date:yyyy-MM-dd}/app-%d{yyyy-MM-dd-HH-mm-ss}-%i.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Filters>
+                <ScriptFilter>
+                    <Script>
+                        <![CDATA[
+                        def event = new org.apache.logging.log4j.core.LogEvent();
+                        def matcher = event.getMessage().matches('.*"id":\\d+,"tag":"A".*');
+                        return matcher;
+                        ]]>
+                    </Script>
+                </ScriptFilter>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="2 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="fileB" fileName="${logPath}/b/${date:yyyy-MM-dd}/app.log"
+                     filePattern="${logPath}/b/${date:yyyy-MM-dd}/app-%d{yyyy-MM-dd-HH-mm-ss}-%i.log">
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</pattern>
+            </PatternLayout>
+            <Filters>
+                <ScriptFilter>
+                    <Script>
+                        <![CDATA[
+                        def event = new org.apache.logging.log4j.core.LogEvent();
+                        def matcher = event.getMessage().matches('.*"id":\\d+,"tag":"B".*');
+                        return matcher;
+                        ]]>
+                    </Script>
+                </ScriptFilter>
+            </Filters>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="2 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="fileA"/>
+            <AppenderRef ref="fileB"/>
+        </Root>
+    </Loggers>
+</Configuration>

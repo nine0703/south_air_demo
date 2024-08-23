@@ -15,8 +15,18 @@ public class LogBean {
     private Long id;
     // 日志标签
     private String tag;
+    // 线程信息
+    private String threadInfo;
     // 日志时间
     private Date time;
 
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id=" + id +
+                ", tag=\"" + tag + "\"" +
+                "}";
+    }
 
 }   // Class end.
